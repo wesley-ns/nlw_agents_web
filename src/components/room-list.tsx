@@ -1,26 +1,19 @@
-import { ArrowRight, Loader2 } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { Badge } from '@/components/ui/badge'
+import { useRooms } from '@/http/use-rooms'
+import { dayjs } from '@/lib/dayjs'
+import { Badge } from './ui/badge'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
-import { useRooms } from '@/http/use-rooms'
-import { dayjs } from '@/lib/dayjs'
+} from './ui/card'
 
 export function RoomList() {
   const { data, isLoading } = useRooms()
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center">
-        <Loader2 className="size-4 animate-spin" />
-      </div>
-    )
-  }
   return (
     <Card>
       <CardHeader>
@@ -31,10 +24,9 @@ export function RoomList() {
       </CardHeader>
       <CardContent className="flex flex-col gap-3">
         {isLoading && (
-          <div className="flex items-center justify-center">
-            <Loader2 className="size-4 animate-spin" />
-          </div>
+          <p className="text-muted-foreground text-sm">Carregando salas...</p>
         )}
+
         {data?.map((room) => {
           return (
             <Link
@@ -50,10 +42,11 @@ export function RoomList() {
                     {dayjs(room.createdAt).toNow()}
                   </Badge>
                   <Badge className="text-xs" variant="secondary">
-                    {room.questionsCount} perguntas
+                    {room.questionsCount} pergunta(s)
                   </Badge>
                 </div>
               </div>
+
               <span className="flex items-center gap-1 text-sm">
                 Entrar
                 <ArrowRight className="size-3" />
